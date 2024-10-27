@@ -1,19 +1,18 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const { PythonShell } = require("python-shell");
-const cors = require("cors");
-const multer = require("multer");
-const fs = require("fs");
+import express from "express";
+import bodyParser from "body-parser";
+import { PythonShell } from "python-shell";
+import cors from "cors";
+import multer from "multer";
+import fs from "fs";
 
 const app = express();
 
 const upload = multer({ dest: "uploads/" });
 app.use(cors());
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post("/upload", upload.single("file"), (req, res) => {
+app.post("/upload", upload.single("file"), async (req, res) => {
   try {
     const file = req.file;
     const oldPath = file.path;
@@ -22,17 +21,17 @@ app.post("/upload", upload.single("file"), (req, res) => {
     let options = {
       args: [file.originalname],
     };
-    PythonShell.run("./beeDiseasePredict.py", options)
+    PythonShell.run("./catAndDogPredict.py", options)
       .then((messages) => {
-        console.log(messages[1]);
-        res.json({ prediction: messages[1] });
+        console.log(messages[2]);
+        res.json({ prediction: messages[2] });
       })
       .catch((e) => {
-        console.log("-----Error----", e);
+        console.log("Error:", e);
         res.json({ e });
       });
   } catch (e) {
-    console.log("-----Error----");
+    console.log("Error:", e);
     res.json({ e });
   }
 });
