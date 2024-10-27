@@ -1,17 +1,54 @@
+/* Styling the welcome banner with a bluish color */
 #welcome-banner {
-  background-color: #ffca28;
+  background-color: #1976d2;
   color: #fff;
   font-weight: bold;
   padding: 20px;
   text-align: center;
+  font-size: 1.8em;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Adding margin between form label and top banner */
+.form-label {
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+
+/* Centering the frame and buttons */
 #frame {
-  max-height: 500px;
+  max-height: 400px;
+  margin-top: 20px;
+  border-radius: 10px;
 }
 
-#prediction-result {
-  background-color: #f0a75e;
-  margin-left: 500px;
-  margin-right: 100px;
+/* Result container with better styling */
+#result-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* Prediction text with better readability */
+.result-text {
+  font-size: 1.4em;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.error-text {
+  font-size: 1.2em;
+  color: #e53935;
+  font-weight: bold;
+}
+
+/* Ensuring the image preview and result container are aligned properly */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

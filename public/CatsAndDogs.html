@@ -14,11 +14,14 @@
     <script>
       function preview() {
         frame.src = URL.createObjectURL(event.target.files[0]);
+        document.getElementById("result-container").style.display = "none";
       }
+
       function clearImage() {
         document.getElementById("formFile").value = null;
-        document.getElementById("prediction-result").innerHTML = null;
+        document.getElementById("prediction-result").innerHTML = "";
         frame.src = "";
+        document.getElementById("result-container").style.display = "none";
       }
 
       function submitForm(event) {
@@ -26,9 +29,9 @@
         const file = fileInput.files[0];
 
         const responseContainer = document.getElementById("prediction-result");
-        responseContainer.innerHTML = `<p>Predicting...</p>`;
+        responseContainer.innerHTML = `<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>`;
+        document.getElementById("result-container").style.display = "block";
 
-        // create a new FormData object
         const formData = new FormData();
         formData.append("file", file);
 
@@ -38,12 +41,7 @@
         })
           .then((response) => response.json())
           .then((data) => {
-            // display response below the form
-            console.log(data);
-
-            responseContainer.innerHTML = `<p>Prediction: ${data.prediction}</p>`;
-            // window.scrollTo(0, 1000);
-
+            responseContainer.innerHTML = `<p class="result-text">Prediction: ${data.prediction}</p>`;
             Swal.fire({
               title: "<strong>Prediction Success!</strong>",
               icon: "success",
@@ -51,8 +49,12 @@
             });
           })
           .catch((error) => {
-            console.error(error);
-            alert("There is an error occured!");
+            responseContainer.innerHTML = `<p class="error-text">An error occurred. Please try again.</p>`;
+            Swal.fire({
+              title: "<strong>Error!</strong>",
+              icon: "error",
+              html: `An error occurred. Please try again.`,
+            });
           });
       }
     </script>
@@ -61,35 +63,37 @@
     <div id="welcome-banner">
       <h1>Cats And Dogs Prediction</h1>
     </div>
-    <br />
 
-    <div class="container col-md-6">
+    <div class="container col-md-6 text-center">
       <div class="mb-5">
-        <label for="Image" class="form-label">Please select a image</label>
+        <label for="formFile" class="form-label mt-4"
+          >Please select an image</label
+        >
         <input
           class="form-control"
           type="file"
           id="formFile"
           onchange="preview()"
+          accept="image/*"
         />
-        <div>
+        <div class="button-group mt-3">
           <button
             type="submit"
-            class="btn btn btn-success mt-3"
+            class="btn btn-success me-2"
             onclick="submitForm()"
           >
             Get Prediction
           </button>
-          <button onclick="clearImage()" class="btn btn-primary mt-3">
+          <button onclick="clearImage()" class="btn btn-primary">
             Clear Image
           </button>
         </div>
       </div>
-      <img id="frame" src="" class="img-fluid" />
+      <img id="frame" src="" class="img-fluid rounded shadow-sm" />
     </div>
-    <br />
-    <div id="result-container">
-      <p id="prediction-result"></p>
+
+    <div id="result-container" class="text-center mt-4" style="display: none">
+      <div id="prediction-result"></div>
     </div>
   </body>
 </html>
